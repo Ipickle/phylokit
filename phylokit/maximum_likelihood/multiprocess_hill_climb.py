@@ -30,67 +30,6 @@ class LikelihoodTree:
     likelihood: float
     num_nodes: int
 
-
-# def ts_to_dataset(ts, samples=None):
-#     """
-#     Convert the specified tskit tree sequence into an sgkit dataset.
-#     Note this just generates haploids for now - see the note above
-#     in simulate_ts.
-#     """
-#     chunks = None
-#     if samples is None:
-#         samples = ts.samples()
-#     tables = ts.dump_tables()
-#     alleles = []
-#     genotypes = []
-#     max_alleles = 0
-#     for var in ts.variants(samples=samples):
-#         alleles.append(var.alleles)
-#         max_alleles = max(max_alleles, len(var.alleles))
-#         genotypes.append(var.genotypes)
-#     padded_alleles = [
-#         list(site_alleles) + [""] * (max_alleles - len(site_alleles))
-#         for site_alleles in alleles
-#     ]
-#     alleles = np.array(padded_alleles).astype("S")
-#     genotypes = np.expand_dims(genotypes, axis=2)
-
-#     ds = sgkit.create_genotype_call_dataset(
-#         variant_contig_names=["1"],
-#         variant_contig=np.zeros(len(tables.sites), dtype=int),
-#         variant_position=tables.sites.position.astype(int),
-#         variant_allele=alleles,
-#         sample_id=np.array([f"tsk_{u}" for u in samples]).astype("U"),
-#         call_genotype=genotypes,
-#     )
-#     if chunks is not None:
-#         ds = ds.chunk({"variants": chunks})
-#     return ds
-
-
-# def simulate_ts(num_samples, sequence_length, mutation_rate, seed=1234):
-#     tsa = msprime.sim_ancestry(
-#         num_samples,
-#         recombination_rate=0,
-#         sequence_length=sequence_length,
-#         ploidy=1,
-#         random_seed=seed,
-#     )
-#     return msprime.sim_mutations(tsa, mutation_rate, random_seed=seed)
-
-
-# def create_mutation_tree(ts_in, mutation_rate):
-#     pk_mts = ts_to_dataset(ts_in)
-#     ds_in = pk.from_tskit(ts_in.first())
-#     ds = ds_in.merge(pk_mts)
-#     ds.attrs["rate"] = mutation_rate
-#     ds.attrs["pi"] = np.full((4, 4), 1 / 4)
-#     ds["variant_allele"] = ("variants", "alleles"), pk.util.base_mapping(
-#         ds.variant_allele.data, np.array([b"A", b"C", b"G", b"T"])
-#     )
-#     return ds
-
-
 def _linkage_matrix_to_dataset(Z):
     n = Z.shape[0] + 1
     N = 2 * n
