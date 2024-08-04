@@ -1,0 +1,10 @@
+numba
+pre-commit
+pytest
+pytest-xdist
+tskit
+msprime
+sgkit
+scipy
+xarray
+bokeh
